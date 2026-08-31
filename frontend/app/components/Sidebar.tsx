@@ -14,10 +14,11 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Painel", href: "/painel" },
-  { label: "Mapa", href: "#", comingSoon: true },
+  { label: "Mapa", href: "/rastreamento" },
+  { label: "Histórico", href: "/historico" },
+  { label: "Pesquisar", href: "/pesquisa" },
   { label: "Alertas", href: "#", comingSoon: true },
   { label: "Relatórios", href: "#", comingSoon: true },
-  { label: "Histórico", href: "#", comingSoon: true },
   { label: "Usuários", href: "/usuarios", adminOnly: true },
 ];
 
