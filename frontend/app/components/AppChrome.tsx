@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const ROUTES_WITHOUT_HEADER = ["/login"];
 
@@ -16,6 +17,7 @@ export default function AppChrome({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 w-full overflow-y-auto">{children}</main>
+      <Footer />
     </div>
   );
 }

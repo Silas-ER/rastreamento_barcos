@@ -71,6 +71,7 @@ export default function HistoricoPage() {
     lat: p.lat as number,
     lon: p.lon as number,
     label: p.timestamp ?? `Ponto ${idx + 1}`,
+    color: "#2dd4bf",
   }));
   const polyline: [number, number][] = pontosValidos.map((p) => [p.lat as number, p.lon as number]);
 
