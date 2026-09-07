@@ -1,98 +1,70 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getCurrentUser } from "@/lib/auth";
 
-const RECURSOS = [
+const FEATURES = [
   {
-    icone: "⚓",
-    titulo: "Cadastro de embarcações",
-    descricao: "Mantenha um cadastro centralizado das embarcações da frota, com nome e MMSI.",
+    title: "Localização atual",
+    description:
+      "Veja no mapa a posição mais recente de cada embarcação de pesca cadastrada, atualizada a partir de dados públicos de rastreamento.",
   },
   {
-    icone: "🔐",
-    titulo: "Controle de acesso por cargo",
-    descricao:
-      "Administradores gerenciam usuários e embarcações; o perfil de consulta acessa só a visualização.",
+    title: "Histórico de trajeto",
+    description:
+      "Consulte o caminho percorrido por uma embarcação em um período, para entender rotas e padrões de deslocamento.",
   },
   {
-    icone: "📋",
-    titulo: "Painel centralizado",
-    descricao: "Acompanhe as embarcações cadastradas em um só lugar, com espaço para crescer.",
+    title: "Pesquisa por nome ou MMSI",
+    description:
+      "Encontre rapidamente uma embarcação específica pesquisando pelo nome do barco ou pelo número MMSI.",
+  },
+  {
+    title: "Dados do Global Fishing Watch",
+    description:
+      "As posições são obtidas a partir de dados públicos do Global Fishing Watch, plataforma internacional de monitoramento pesqueiro.",
   },
 ];
 
 export default function LandingPage() {
-  const [autenticado, setAutenticado] = useState(false);
-
-  useEffect(() => {
-    setAutenticado(!!getCurrentUser());
-  }, []);
-
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="border-b border-white/10">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
-          <span className="text-lg font-semibold text-white">
-            Rastreamento de Barcos
-          </span>
-          <Link
-            href={autenticado ? "/painel" : "/login"}
-            className="rounded-md bg-white px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-white/90"
-          >
-            {autenticado ? "Ir para o painel" : "Entrar"}
-          </Link>
-        </div>
-      </header>
-
-      <main className="flex-1">
-        <section className="mx-auto max-w-6xl px-8 py-20 text-center">
-          <h1 className="mx-auto max-w-2xl text-4xl font-semibold leading-tight text-white">
-            Gestão e rastreamento da sua frota em um só lugar
+    <div className="w-full">
+      <section className="border-b border-border bg-background-elevated px-8 py-20">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          <h1 className="mb-4 text-3xl font-semibold text-foreground sm:text-4xl">
+            Rastreamento de Barcos de Pesca
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-muted">
-            Cadastre embarcações, controle quem tem acesso ao sistema e acompanhe
-            tudo por um painel simples, feito para crescer junto com a operação.
+          <p className="mb-8 max-w-2xl text-base text-muted">
+            Monitore embarcações de pesca cadastradas com base em dados públicos do
+            Global Fishing Watch: localização atual, histórico de trajeto e busca por
+            nome ou MMSI, tudo em um só lugar.
           </p>
           <Link
-            href={autenticado ? "/painel" : "/login"}
-            className="mt-8 inline-block rounded-md bg-white px-6 py-3 font-medium text-background transition-colors hover:bg-white/90"
+            href="/login"
+            className="rounded-md bg-accent px-5 py-2.5 font-medium text-white transition-colors hover:bg-accent-hover"
           >
-            {autenticado ? "Ir para o painel" : "Acessar o sistema"}
+            Entrar
           </Link>
+        </div>
+      </section>
 
-          <div className="mx-auto mt-16 h-px w-24 bg-white/20" />
-        </section>
-
-        <section className="border-t border-white/10 bg-background-elevated">
-          <div className="mx-auto max-w-6xl px-8 py-16">
-            <h2 className="mb-10 text-center text-xl font-semibold text-white">
-              Tudo que você precisa em um só lugar
-            </h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              {RECURSOS.map((recurso) => (
-                <div
-                  key={recurso.titulo}
-                  className="rounded-lg border border-white/10 bg-background p-6"
-                >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-white text-lg">
-                    {recurso.icone}
-                  </div>
-                  <h3 className="mb-2 text-base font-semibold text-white">
-                    {recurso.titulo}
-                  </h3>
-                  <p className="text-sm text-muted">{recurso.descricao}</p>
-                </div>
-              ))}
-            </div>
+      <section className="px-8 py-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-8 text-center text-xl font-semibold text-foreground">
+            O que você pode fazer
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.title}
+                className="rounded-lg border border-border bg-background-elevated p-5"
+              >
+                <h3 className="mb-2 text-sm font-medium text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted">{feature.description}</p>
+              </div>
+            ))}
           </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-white/10 px-8 py-6 text-center text-sm text-muted">
-        Rastreamento de Barcos — acesso restrito a usuários autorizados.
-      </footer>
+        </div>
+      </section>
     </div>
   );
 }
