@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { api, ApiError, Barco } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
+import Fab from "@/app/components/Fab";
 
 export default function BarcosPage() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function BarcosPage() {
   }, [router]);
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl flex-col px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-8 py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Barcos</h1>
       <p className="mb-8 text-sm text-muted">
         Embarcações cadastradas para monitoramento.
@@ -73,30 +74,7 @@ export default function BarcosPage() {
       )}
 
       {!loading && !error && isAdmin && (
-        <div className="pointer-events-none sticky bottom-6 z-40 mt-auto flex justify-end pt-10">
-          <button
-            type="button"
-            onClick={() => setModalAberto(true)}
-            aria-label="Adicionar barco"
-            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-          </button>
-        </div>
+        <Fab label="Adicionar barco" onClick={() => setModalAberto(true)} />
       )}
 
       {modalAberto && (

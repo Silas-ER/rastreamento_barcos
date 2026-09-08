@@ -219,3 +219,9 @@ __marimo__/
 
 # Seeds
 scripts/seed_admin.py
+
+#
+*.sst
+LOG
+.meta
+.next

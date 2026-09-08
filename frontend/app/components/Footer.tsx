@@ -4,7 +4,7 @@ export default function Footer() {
   const ano = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-border bg-background-elevated">
+    <footer id="site-footer" className="w-full border-t border-border bg-background-elevated">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-8 py-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-md">
           <Logo />
