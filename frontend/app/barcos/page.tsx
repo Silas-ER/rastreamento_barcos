@@ -2,15 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { api, ApiError, Usuario } from "@/lib/api";
+import { api, ApiError, Barco } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
 
-export default function UsuariosPage() {
+export default function BarcosPage() {
   const router = useRouter();
-  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [barcos, setBarcos] = useState<Barco[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [modalAberto, setModalAberto] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -18,32 +19,29 @@ export default function UsuariosPage() {
       router.replace("/login");
       return;
     }
-    if (user.cargo !== "admin") {
-      router.replace("/painel");
-      return;
-    }
+    setIsAdmin(user.cargo === "admin");
 
     api
-      .listUsuarios()
-      .then(setUsuarios)
+      .listBarcos()
+      .then(setBarcos)
       .catch((err) => {
         if (err instanceof ApiError && (err.status === 401 || err.status === 403)) {
           router.replace(err.status === 401 ? "/login" : "/");
           return;
         }
-        setError(err instanceof ApiError ? err.message : "Erro ao carregar usuários.");
+        setError(err instanceof ApiError ? err.message : "Erro ao carregar barcos.");
       })
       .finally(() => setLoading(false));
   }, [router]);
 
   return (
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl flex-col px-8 py-10">
-      <h1 className="mb-1 text-2xl font-semibold text-foreground">Usuários</h1>
+      <h1 className="mb-1 text-2xl font-semibold text-foreground">Barcos</h1>
       <p className="mb-8 text-sm text-muted">
-        Gerencie quem tem acesso ao sistema e seus cargos.
+        Embarcações cadastradas para monitoramento.
       </p>
 
-      {loading && <p className="text-muted">Carregando usuários...</p>}
+      {loading && <p className="text-muted">Carregando barcos...</p>}
 
       {error && (
         <p className="rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
@@ -51,67 +49,61 @@ export default function UsuariosPage() {
         </p>
       )}
 
-      {!loading && !error && usuarios.length === 0 && (
-        <p className="text-muted">Nenhum usuário cadastrado.</p>
+      {!loading && !error && barcos.length === 0 && (
+        <p className="text-muted">Nenhum barco cadastrado.</p>
       )}
 
-      {!loading && !error && usuarios.length > 0 && (
+      {!loading && !error && barcos.length > 0 && (
         <table className="w-full overflow-hidden rounded-lg border border-border bg-background-elevated text-sm">
           <thead>
             <tr className="border-b border-border text-left text-muted">
               <th className="px-4 py-3 font-medium">Nome</th>
-              <th className="px-4 py-3 font-medium">Email</th>
-              <th className="px-4 py-3 font-medium">Cargo</th>
+              <th className="px-4 py-3 font-medium">MMSI</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {usuarios.map((usuario) => (
-              <tr key={usuario.id}>
-                <td className="px-4 py-3 text-foreground">{usuario.nome}</td>
-                <td className="px-4 py-3 text-foreground">{usuario.email}</td>
-                <td className="px-4 py-3">
-                  <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
-                    {usuario.cargo}
-                  </span>
-                </td>
+            {barcos.map((barco) => (
+              <tr key={barco.id}>
+                <td className="px-4 py-3 text-foreground">{barco.nome}</td>
+                <td className="px-4 py-3 text-foreground">{barco.mmsi}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-      {!loading && !error && (
+      {!loading && !error && isAdmin && (
         <div className="pointer-events-none sticky bottom-6 z-40 mt-auto flex justify-end pt-10">
-        <button
-          type="button"
-          onClick={() => setModalAberto(true)}
-          aria-label="Adicionar usuário"
-          className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+          <button
+            type="button"
+            onClick={() => setModalAberto(true)}
+            aria-label="Adicionar barco"
+            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
           >
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          </button>
         </div>
       )}
 
       {modalAberto && (
-        <NovoUsuarioModal
+        <NovoBarcoModal
           onClose={() => setModalAberto(false)}
-          onCreated={(usuario) => {
-            setUsuarios((prev) => [...prev, usuario]);
+          onCreated={(barco) => {
+            setBarcos((prev) => [...prev, barco]);
             setModalAberto(false);
           }}
         />
@@ -120,17 +112,15 @@ export default function UsuariosPage() {
   );
 }
 
-function NovoUsuarioModal({
+function NovoBarcoModal({
   onClose,
   onCreated,
 }: {
   onClose: () => void;
-  onCreated: (usuario: Usuario) => void;
+  onCreated: (barco: Barco) => void;
 }) {
   const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [cargo, setCargo] = useState<"consulta" | "admin">("consulta");
+  const [mmsi, setMmsi] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
@@ -146,31 +136,22 @@ function NovoUsuarioModal({
     event.preventDefault();
     setErro(null);
 
-    if (!nome.trim() || !email.trim() || !senha) {
+    if (!nome.trim() || !mmsi.trim()) {
       setErro("Preencha todos os campos.");
       return;
     }
-    if (!email.includes("@")) {
-      setErro("Informe um email válido.");
-      return;
-    }
-    if (senha.length < 8) {
-      setErro("A senha deve ter pelo menos 8 caracteres.");
+    if (!/^\d{9}$/.test(mmsi.trim())) {
+      setErro("O MMSI deve conter exatamente 9 dígitos.");
       return;
     }
 
     setEnviando(true);
     try {
-      const usuario = await api.createUsuario({
-        nome: nome.trim(),
-        email: email.trim(),
-        senha,
-        cargo,
-      });
-      onCreated(usuario);
+      const barco = await api.createBarco({ nome: nome.trim(), mmsi: mmsi.trim() });
+      onCreated(barco);
     } catch (err) {
       setErro(
-        err instanceof ApiError ? err.message : "Erro ao criar usuário. Tente novamente."
+        err instanceof ApiError ? err.message : "Erro ao criar barco. Tente novamente."
       );
     } finally {
       setEnviando(false);
@@ -185,13 +166,13 @@ function NovoUsuarioModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="novo-usuario-titulo"
+        aria-labelledby="novo-barco-titulo"
         className="w-full max-w-sm rounded-lg border border-border bg-background-elevated p-6 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="novo-usuario-titulo" className="text-lg font-semibold text-foreground">
-            Novo usuário
+          <h2 id="novo-barco-titulo" className="text-lg font-semibold text-foreground">
+            Novo barco
           </h2>
           <button
             type="button"
@@ -232,48 +213,19 @@ function NovoUsuarioModal({
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="mb-1 block text-sm text-muted">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-accent focus:outline-none"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="senha" className="mb-1 block text-sm text-muted">
-              Senha
-            </label>
-            <input
-              id="senha"
-              type="password"
-              required
-              minLength={8}
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-accent focus:outline-none"
-            />
-          </div>
-
           <div className="mb-6">
-            <label htmlFor="cargo" className="mb-1 block text-sm text-muted">
-              Cargo
+            <label htmlFor="mmsi" className="mb-1 block text-sm text-muted">
+              MMSI
             </label>
-            <select
-              id="cargo"
-              value={cargo}
-              onChange={(e) => setCargo(e.target.value as "consulta" | "admin")}
+            <input
+              id="mmsi"
+              type="text"
+              inputMode="numeric"
+              required
+              value={mmsi}
+              onChange={(e) => setMmsi(e.target.value.replace(/\D/g, "").slice(0, 9))}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-accent focus:outline-none"
-            >
-              <option value="consulta">Consulta</option>
-              <option value="admin">Admin</option>
-            </select>
+            />
           </div>
 
           {erro && (

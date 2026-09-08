@@ -15,6 +15,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Mapa", href: "/rastreamento" },
+  { label: "Barcos", href: "/barcos" },
   { label: "Histórico", href: "/historico" },
   { label: "Pesquisar", href: "/pesquisa" },
   { label: "Alertas", href: "#", comingSoon: true },
