@@ -70,7 +70,7 @@ load_dotenv()
 
 _API_KEY = os.environ.get("API_KEY_GFW", "").strip()
 _BASE_URL = "https://gateway.api.globalfishingwatch.org/v3"
-_TIMEOUT = 15.0
+_TIMEOUT = 8.0
 
 _VESSEL_IDENTITY_DATASET = "public-global-vessel-identity:latest"
 _EVENT_DATASETS = [

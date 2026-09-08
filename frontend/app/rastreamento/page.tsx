@@ -51,8 +51,8 @@ export default function RastreamentoPage() {
     }));
 
   return (
-    <div className="w-full px-4 py-5">
-      <div className="mb-5 flex items-center justify-between">
+    <div className="mx-auto w-full max-w-[1600px] px-4 py-6">
+      <div className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="mb-1 text-2xl font-semibold text-foreground">Localização atual</h1>
           <p className="text-sm text-muted">
@@ -83,10 +83,10 @@ export default function RastreamentoPage() {
       )}
 
       {!error && barcos.length > 0 && (
-        <div className="relative mb-4">
+        <div className="relative">
           <BarcosMap
             markers={markers}
-            height="calc(100vh - 220px)"
+            height="calc(100vh - 8rem)"
             selecionadoId={selecionadoId}
             onPopupClose={() => setSelecionadoId(null)}
           />

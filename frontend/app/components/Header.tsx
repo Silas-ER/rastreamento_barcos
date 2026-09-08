@@ -47,7 +47,7 @@ export default function Header() {
 
   if (!isLoggedIn) {
     return (
-      <header className="sticky top-0 z-40 flex h-16 w-full shrink-0 items-center justify-between border-b border-border bg-background-elevated px-5">
+      <header className="fixed inset-x-0 top-0 z-[1100] flex h-16 w-full shrink-0 items-center justify-between border-b border-border bg-background-elevated px-5">
         <Logo />
         <Link
           href="/login"
@@ -60,7 +60,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full shrink-0 items-center gap-6 border-b border-border bg-background-elevated px-5">
+    <header className="fixed inset-x-0 top-0 z-[1100] flex h-16 w-full shrink-0 items-center gap-6 border-b border-border bg-background-elevated px-5">
       <Logo />
 
       <nav className="flex flex-1 items-center gap-1 overflow-x-auto">

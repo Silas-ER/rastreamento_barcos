@@ -16,7 +16,7 @@ export default function AppChrome({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 w-full overflow-y-auto">{children}</main>
+      <main className="flex-1 w-full pt-16">{children}</main>
       <Footer />
     </div>
   );

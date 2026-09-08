@@ -1,4 +1,5 @@
 import logging
+from concurrent.futures import ThreadPoolExecutor
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -35,28 +36,31 @@ def listar_barcos(db: Session = Depends(get_db)):
 @router.get("/rastreamento/atual", response_model=list[BarcoAtual])
 def rastreamento_atual(db: Session = Depends(get_db)):
     """Posição atual (via GFW) de todos os barcos cadastrados no banco."""
-    barcos = db.query(Barco).all()
-    resultado: list[BarcoAtual] = []
+    barcos = db.query(Barco).order_by(Barco.id).all()
 
-    for barco in barcos:
-        posicao = None
+    def _posicao(barco: Barco) -> dict | None:
         try:
-            posicao = gfw.obter_status_atual(barco.mmsi)
+            return gfw.obter_status_atual(barco.mmsi)
         except gfw.GFWError as exc:
-            logger.warning("Falha ao obter posição atual do barco %s (%s): %s", barco.id, barco.mmsi, exc)
-
-        resultado.append(
-            BarcoAtual(
-                id=barco.id,
-                nome=barco.nome,
-                mmsi=barco.mmsi,
-                lat=posicao.get("lat") if posicao else None,
-                lon=posicao.get("lon") if posicao else None,
-                timestamp=posicao.get("timestamp") if posicao else None,
+            logger.warning(
+                "Falha ao obter posição atual do barco %s (%s): %s", barco.id, barco.mmsi, exc
             )
-        )
+            return None
 
-    return resultado
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        posicoes = list(executor.map(_posicao, barcos))
+
+    return [
+        BarcoAtual(
+            id=barco.id,
+            nome=barco.nome,
+            mmsi=barco.mmsi,
+            lat=posicao.get("lat") if posicao else None,
+            lon=posicao.get("lon") if posicao else None,
+            timestamp=posicao.get("timestamp") if posicao else None,
+        )
+        for barco, posicao in zip(barcos, posicoes)
+    ]
 
 
 @router.get("/pesquisa", response_model=list[ResultadoPesquisa])
