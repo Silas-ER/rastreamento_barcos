@@ -1,7 +1,5 @@
 import { getToken } from "./auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export class ApiError extends Error {
   status: number;
 
@@ -17,13 +15,6 @@ interface RequestOptions extends RequestInit {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  if (!API_URL) {
-    throw new ApiError(
-      "NEXT_PUBLIC_API_URL não está configurada. Defina a variável de ambiente apontando para o backend.",
-      0
-    );
-  }
-
   const { auth = true, headers, ...rest } = options;
 
   const finalHeaders: HeadersInit = {
@@ -40,7 +31,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
   let response: Response;
   try {
-    response = await fetch(`${API_URL}${path}`, {
+    response = await fetch(`/api${path}`, {
       ...rest,
       headers: finalHeaders,
     });
@@ -237,20 +228,20 @@ export const api = {
       auth: false,
     }),
 
-  listBarcos: () => request<Barco[]>("/barcos/"),
+  listBarcos: () => request<Barco[]>("/barcos"),
 
   getBarco: (id: string | number) => request<Barco>(`/barcos/${id}`),
 
   createBarco: (body: BarcoCreate) =>
-    request<Barco>("/barcos/", {
+    request<Barco>("/barcos", {
       method: "POST",
       body: JSON.stringify(body),
     }),
 
-  listUsuarios: () => request<Usuario[]>("/usuarios/"),
+  listUsuarios: () => request<Usuario[]>("/usuarios"),
 
   createUsuario: (body: UsuarioCreate) =>
-    request<Usuario>("/usuarios/", {
+    request<Usuario>("/usuarios", {
       method: "POST",
       body: JSON.stringify(body),
     }),
