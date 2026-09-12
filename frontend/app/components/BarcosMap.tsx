@@ -63,7 +63,7 @@ interface BarcosMapProps {
 export default function BarcosMap({
   markers,
   polyline,
-  height = "480px",
+  height = "h-[70vh] md:h-[480px]",
   selecionadoId,
   onPopupClose,
 }: BarcosMapProps) {
@@ -79,7 +79,7 @@ export default function BarcosMap({
   );
 
   return (
-    <div style={{ height }} className="relative w-full overflow-hidden rounded-lg border border-border">
+    <div className={`relative w-full overflow-hidden rounded-lg border border-border ${height}`}>
       <MapContainer
         center={DEFAULT_CENTER}
         zoom={4}

@@ -33,7 +33,7 @@ export default function DashboardPage() {
   }, [router]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Painel</h1>
       <p className="mb-8 text-sm text-muted">
         Visão geral das embarcações cadastradas.
@@ -64,29 +64,31 @@ export default function DashboardPage() {
         )}
 
         {!loading && !error && barcos.length > 0 && (
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-border text-muted">
-                <th className="px-5 py-3 font-medium">Nome</th>
-                <th className="px-5 py-3 font-medium">MMSI</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {barcos.map((barco) => (
-                <tr key={barco.id} className="hover:bg-background/60">
-                  <td className="px-5 py-3">
-                    <Link
-                      href={`/barcos/${barco.id}`}
-                      className="text-foreground hover:text-accent"
-                    >
-                      {barco.nome}
-                    </Link>
-                  </td>
-                  <td className="px-5 py-3 text-muted">{barco.mmsi}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[360px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-border text-muted">
+                  <th className="px-5 py-3 font-medium">Nome</th>
+                  <th className="px-5 py-3 font-medium">MMSI</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {barcos.map((barco) => (
+                  <tr key={barco.id} className="hover:bg-background/60">
+                    <td className="px-5 py-3">
+                      <Link
+                        href={`/barcos/${barco.id}`}
+                        className="text-foreground hover:text-accent"
+                      >
+                        {barco.nome}
+                      </Link>
+                    </td>
+                    <td className="px-5 py-3 text-muted">{barco.mmsi}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

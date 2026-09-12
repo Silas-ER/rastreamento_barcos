@@ -39,7 +39,7 @@ export default function BarcoDetalhePage() {
   }, [params.id, router]);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-8 py-10">
+    <div className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 sm:py-10">
       <Link href="/painel" className="mb-6 inline-block text-sm text-accent hover:text-accent-hover">
         &larr; Voltar para embarcações
       </Link>

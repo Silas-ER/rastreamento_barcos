@@ -52,14 +52,14 @@ export default function PesquisaPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Pesquisar embarcações</h1>
       <p className="mb-8 text-sm text-muted">
         Busque por nome ou MMSI. Resultados podem incluir embarcações ainda não cadastradas.
       </p>
 
-      <form onSubmit={handleSubmit} className="mb-8 flex flex-wrap items-end gap-4">
-        <div className="min-w-[280px] flex-1">
+      <form onSubmit={handleSubmit} className="mb-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="w-full sm:min-w-[280px] sm:flex-1">
           <label htmlFor="query" className="mb-1 block text-sm text-muted">
             Nome ou MMSI
           </label>
@@ -75,7 +75,7 @@ export default function PesquisaPage() {
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="rounded-md bg-accent px-4 py-2 font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+          className="w-full rounded-md bg-accent px-4 py-2 font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60 sm:w-auto"
         >
           {loading ? "Pesquisando..." : "Pesquisar"}
         </button>
@@ -96,36 +96,38 @@ export default function PesquisaPage() {
           <div className="border-b border-border px-5 py-4">
             <h2 className="text-sm font-medium text-foreground">Resultados</h2>
           </div>
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-border text-muted">
-                <th className="px-5 py-3 font-medium">Nome</th>
-                <th className="px-5 py-3 font-medium">MMSI</th>
-                <th className="px-5 py-3 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {resultados.map((r, idx) => (
-                <tr key={r.id ?? `${r.mmsi}-${idx}`} className="hover:bg-background/60">
-                  <td className="px-5 py-3 text-foreground">{r.nome}</td>
-                  <td className="px-5 py-3 text-muted">{r.mmsi}</td>
-                  <td className="px-5 py-3">
-                    {r.cadastrado === null ? (
-                      <span className="text-xs text-muted">Desconhecido</span>
-                    ) : r.cadastrado ? (
-                      <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
-                        Cadastrado
-                      </span>
-                    ) : (
-                      <span className="rounded-full border border-border px-2 py-0.5 text-xs text-muted">
-                        Não cadastrado
-                      </span>
-                    )}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[480px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-border text-muted">
+                  <th className="px-5 py-3 font-medium">Nome</th>
+                  <th className="px-5 py-3 font-medium">MMSI</th>
+                  <th className="px-5 py-3 font-medium">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {resultados.map((r, idx) => (
+                  <tr key={r.id ?? `${r.mmsi}-${idx}`} className="hover:bg-background/60">
+                    <td className="px-5 py-3 text-foreground">{r.nome}</td>
+                    <td className="px-5 py-3 text-muted">{r.mmsi}</td>
+                    <td className="px-5 py-3">
+                      {r.cadastrado === null ? (
+                        <span className="text-xs text-muted">Desconhecido</span>
+                      ) : r.cadastrado ? (
+                        <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
+                          Cadastrado
+                        </span>
+                      ) : (
+                        <span className="rounded-full border border-border px-2 py-0.5 text-xs text-muted">
+                          Não cadastrado
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

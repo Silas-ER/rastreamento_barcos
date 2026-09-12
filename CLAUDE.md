@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Refactor of a boat tracking system (`rastreamento_barcos`) that monitors boats and checks their position history. Backend is a FastAPI + SQLAlchemy + PostgreSQL API with JWT auth and role-based access (admin / consulta). A separate Next.js frontend (deployed on Vercel) is planned but not yet started — the backend must not assume same-origin with it.
+Refactor of a boat tracking system (`rastreamento_barcos`) that monitors boats and checks their position history. Backend is a FastAPI + SQLAlchemy + PostgreSQL API with JWT auth and role-based access (admin / consulta). A separate Next.js frontend lives in `frontend/` (deployed on Vercel) — the backend must not assume same-origin with it.
 
 ## Commands
 
@@ -52,3 +52,13 @@ Config is read from a `.env` file (via `python-dotenv`), not committed. Required
 Auth model: login (`POST /auth/login`) issues a JWT with `sub` (email) and `cargo` (role) claims. Protected routes depend on `get_current_user` (any authenticated user) or `requer_admin` (must have `Cargo.ADMIN`).
 
 As routes, models, and services grow, prefer extending this structure (e.g. `app/services/`) rather than accumulating logic in routers or `main.py`.
+
+## Frontend (`frontend/`)
+
+Next.js (App Router) + TypeScript + Tailwind app, deployed on Vercel, consuming the FastAPI backend.
+
+Responsive design is a hard requirement, not an afterthought: **every new page or component must work on mobile (~375px width), tablet (~768px), and desktop.** In practice:
+- Use Tailwind responsive breakpoints (`sm:`/`md:`/`lg:`) instead of a single fixed desktop layout — stack with `flex-col md:flex-row`, avoid fixed pixel widths/heights in favor of fluid or breakpoint-based sizing.
+- Navigation/menus that list many items must collapse into a mobile-friendly pattern (e.g. a hamburger/drawer) below `md`, not just horizontal scroll.
+- Tables or wide content that can't reasonably reflow need a scroll wrapper (`overflow-x-auto`) so they don't break the page layout on small screens.
+- When touching an existing page, bring it up to this standard if it isn't already responsive, rather than adding more desktop-only markup on top.

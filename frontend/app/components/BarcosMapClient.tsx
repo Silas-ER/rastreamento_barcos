@@ -8,7 +8,7 @@ import type { MapMarker } from "./BarcosMap";
 const BarcosMap = dynamic(() => import("./BarcosMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[480px] w-full items-center justify-center rounded-lg border border-border bg-background-elevated text-sm text-muted">
+    <div className="flex h-[70vh] w-full items-center justify-center rounded-lg border border-border bg-background-elevated text-sm text-muted md:h-[480px]">
       Carregando mapa...
     </div>
   ),

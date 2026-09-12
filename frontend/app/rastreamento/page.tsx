@@ -51,8 +51,8 @@ export default function RastreamentoPage() {
     }));
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 py-6">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="mx-auto w-full max-w-[1600px] px-3 py-4 sm:px-4 sm:py-6">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="mb-1 text-2xl font-semibold text-foreground">Localização atual</h1>
           <p className="text-sm text-muted">
@@ -62,7 +62,7 @@ export default function RastreamentoPage() {
         <button
           onClick={carregar}
           disabled={loading}
-          className="rounded-md border border-border px-3 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
+          className="self-start rounded-md border border-border px-3 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent disabled:opacity-60 sm:self-auto"
         >
           {loading ? "Atualizando..." : "Atualizar"}
         </button>
@@ -86,7 +86,7 @@ export default function RastreamentoPage() {
         <div className="relative">
           <BarcosMap
             markers={markers}
-            height="calc(100vh - 8rem)"
+            height="h-[70vh] md:h-[calc(100vh-8rem)]"
             selecionadoId={selecionadoId}
             onPopupClose={() => setSelecionadoId(null)}
           />

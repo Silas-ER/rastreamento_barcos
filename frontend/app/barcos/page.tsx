@@ -36,7 +36,7 @@ export default function BarcosPage() {
   }, [router]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Barcos</h1>
       <p className="mb-8 text-sm text-muted">
         Embarcações cadastradas para monitoramento.
@@ -55,22 +55,24 @@ export default function BarcosPage() {
       )}
 
       {!loading && !error && barcos.length > 0 && (
-        <table className="w-full overflow-hidden rounded-lg border border-border bg-background-elevated text-sm">
-          <thead>
-            <tr className="border-b border-border text-left text-muted">
-              <th className="px-4 py-3 font-medium">Nome</th>
-              <th className="px-4 py-3 font-medium">MMSI</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {barcos.map((barco) => (
-              <tr key={barco.id}>
-                <td className="px-4 py-3 text-foreground">{barco.nome}</td>
-                <td className="px-4 py-3 text-foreground">{barco.mmsi}</td>
+        <div className="overflow-x-auto rounded-lg border border-border bg-background-elevated">
+          <table className="w-full min-w-[360px] text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-muted">
+                <th className="px-4 py-3 font-medium">Nome</th>
+                <th className="px-4 py-3 font-medium">MMSI</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {barcos.map((barco) => (
+                <tr key={barco.id}>
+                  <td className="px-4 py-3 text-foreground">{barco.nome}</td>
+                  <td className="px-4 py-3 text-foreground">{barco.mmsi}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {!loading && !error && isAdmin && (

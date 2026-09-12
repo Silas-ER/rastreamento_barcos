@@ -38,7 +38,7 @@ export default function UsuariosPage() {
   }, [router]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Usuários</h1>
       <p className="mb-8 text-sm text-muted">
         Gerencie quem tem acesso ao sistema e seus cargos.
@@ -57,28 +57,30 @@ export default function UsuariosPage() {
       )}
 
       {!loading && !error && usuarios.length > 0 && (
-        <table className="w-full overflow-hidden rounded-lg border border-border bg-background-elevated text-sm">
-          <thead>
-            <tr className="border-b border-border text-left text-muted">
-              <th className="px-4 py-3 font-medium">Nome</th>
-              <th className="px-4 py-3 font-medium">Email</th>
-              <th className="px-4 py-3 font-medium">Cargo</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {usuarios.map((usuario) => (
-              <tr key={usuario.id}>
-                <td className="px-4 py-3 text-foreground">{usuario.nome}</td>
-                <td className="px-4 py-3 text-foreground">{usuario.email}</td>
-                <td className="px-4 py-3">
-                  <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
-                    {usuario.cargo}
-                  </span>
-                </td>
+        <div className="overflow-x-auto rounded-lg border border-border bg-background-elevated">
+          <table className="w-full min-w-[480px] text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-muted">
+                <th className="px-4 py-3 font-medium">Nome</th>
+                <th className="px-4 py-3 font-medium">Email</th>
+                <th className="px-4 py-3 font-medium">Cargo</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {usuarios.map((usuario) => (
+                <tr key={usuario.id}>
+                  <td className="px-4 py-3 text-foreground">{usuario.nome}</td>
+                  <td className="px-4 py-3 text-foreground">{usuario.email}</td>
+                  <td className="px-4 py-3">
+                    <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent">
+                      {usuario.cargo}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {!loading && !error && (

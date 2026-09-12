@@ -76,14 +76,14 @@ export default function HistoricoPage() {
   const polyline: [number, number][] = pontosValidos.map((p) => [p.lat as number, p.lon as number]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-8 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
       <h1 className="mb-1 text-2xl font-semibold text-foreground">Histórico de trajeto</h1>
       <p className="mb-8 text-sm text-muted">
         Selecione uma embarcação e um período para visualizar o trajeto percorrido.
       </p>
 
-      <div className="mb-8 flex flex-wrap items-end gap-4 rounded-lg border border-border bg-background-elevated p-5">
-        <div className="min-w-[220px]">
+      <div className="mb-8 flex flex-col gap-4 rounded-lg border border-border bg-background-elevated p-4 sm:flex-row sm:flex-wrap sm:items-end sm:p-5">
+        <div className="w-full sm:min-w-[220px] sm:w-auto">
           <label htmlFor="barco" className="mb-1 block text-sm text-muted">
             Embarcação
           </label>
@@ -103,7 +103,7 @@ export default function HistoricoPage() {
           </select>
         </div>
 
-        <div className="min-w-[140px]">
+        <div className="w-full sm:min-w-[140px] sm:w-auto">
           <label htmlFor="dias" className="mb-1 block text-sm text-muted">
             Período
           </label>
@@ -124,7 +124,7 @@ export default function HistoricoPage() {
         <button
           onClick={handleBuscar}
           disabled={!barcoId || loadingHistorico}
-          className="rounded-md bg-accent px-4 py-2 font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+          className="w-full rounded-md bg-accent px-4 py-2 font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60 sm:w-auto"
         >
           {loadingHistorico ? "Buscando..." : "Buscar"}
         </button>
@@ -153,24 +153,26 @@ export default function HistoricoPage() {
           <div className="border-b border-border px-5 py-4">
             <h2 className="text-sm font-medium text-foreground">Pontos do trajeto</h2>
           </div>
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-border text-muted">
-                <th className="px-5 py-3 font-medium">Data/Hora</th>
-                <th className="px-5 py-3 font-medium">Latitude</th>
-                <th className="px-5 py-3 font-medium">Longitude</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {pontos.map((ponto, idx) => (
-                <tr key={idx} className="hover:bg-background/60">
-                  <td className="px-5 py-3 text-foreground">{ponto.timestamp ?? "-"}</td>
-                  <td className="px-5 py-3 text-muted">{ponto.lat ?? "-"}</td>
-                  <td className="px-5 py-3 text-muted">{ponto.lon ?? "-"}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[480px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-border text-muted">
+                  <th className="px-5 py-3 font-medium">Data/Hora</th>
+                  <th className="px-5 py-3 font-medium">Latitude</th>
+                  <th className="px-5 py-3 font-medium">Longitude</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {pontos.map((ponto, idx) => (
+                  <tr key={idx} className="hover:bg-background/60">
+                    <td className="px-5 py-3 text-foreground">{ponto.timestamp ?? "-"}</td>
+                    <td className="px-5 py-3 text-muted">{ponto.lat ?? "-"}</td>
+                    <td className="px-5 py-3 text-muted">{ponto.lon ?? "-"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
